@@ -31,7 +31,10 @@
     nonFillColor: 'lightgrey',
     fillText:{
       color: 'white',
-      format: '{value.percentage}'
+      size: '50px',
+      format: '{value.percentage}',
+      paddingLeft: '0%',
+      paddingRight: '0%'
     },
     fillDirection: 'up',
     fillAdjustment: {
@@ -55,6 +58,9 @@
   AwesomeVisuals.prototype.init = function (type, element, options) {
     this.enabled   = true
     this.type      = type
+    this.partFill  =
+    this.labelFill =
+    this.labelPartFill =
     this.$element  = $(element)
     this.options   = this.getOptions(options)
 
@@ -67,37 +73,60 @@
       this.$element.css("width", AwesomeVisuals.PRIVATES.containerWidth );
     }
 
-    var wrapper = $("<div>").addClass("awesomeVisualsWrapper").css("height", this.options.height);
+    var wrapper = $("<div>").addClass("awesomeVisualsWrapper").addClass(this.options.fillDirection).css("height", this.options.height);
 
     var fill = $("<div>").addClass("fill").css("color", this.options.nonFillColor);
     var partFill = $("<div>").addClass("partFill").css("color", this.options.fillColor);
 
+    this.partFill = partFill;
 
     var fillHeight = (this.options.height - this.options.fillAdjustment.top - this.options.fillAdjustment.bottom) ;
     var partFillMarginTop = fillHeight* (1-this.options.fillProportion) + this.options.fillAdjustment.top;
     var partFillHeight = this.options.height - partFillMarginTop;
-     partFill.css({
-      "margin-top": partFillMarginTop,
-      "height": partFillHeight  
-     });
+
+    if (this.options.fillDirection == "up"){
+       partFill.css({
+        "margin-top": partFillMarginTop,
+        "height": partFillHeight  
+       });
+     }else{
+        partFill.css({
+        "margin-bottom": partFillMarginTop,
+        "height": partFillHeight  
+       });
+
+     }
 
      //create fill elements
     var fillIcon = $("<div>").addClass('iconHolder').css({
       "font-size":this.options.height}).append($("<i>").addClass('fa fa-'+ this.options.fontawesomeIcon))
+    var fillLabel = $("<div>").html(this.getLabel(this.options.fillText.format,this.options.fillProportion ))
     var fillText = $("<div>").addClass("fillText").css({
       "height": this.options.height,
-      "color": this.options.fillColor }).append($("<div>").html(this.getLabel(this.options.fillText.format,this.options.fillProportion )))
+      "color": this.options.fillColor,
+      "font-size": this.options.fillText.size,
+      "margin-left": this.options.fillText.marginLeft,
+      "margin-right": this.options.fillText.marginRight }).append(fillLabel)
 
     fill.append(fillIcon).append(fillText);
+
+    this.labelFill = fillLabel
+
     //
     //create part fill elements
     var partFillIcon = $("<div>").addClass('iconHolder').css({
       "font-size":this.options.height}).append($("<i>").addClass('fa fa-'+ this.options.fontawesomeIcon))
+    var partFillLabel = $("<div>").html(this.getLabel(this.options.fillText.format,this.options.fillProportion ))
     var partFillText = $("<div>").addClass("fillText").css({
       "height": this.options.height,
-      "color": this.options.fillText.color}).append($("<div>").html(this.getLabel(this.options.fillText.format,this.options.fillProportion )))
+      "color": this.options.fillText.color,
+      "font-size": this.options.fillText.size,
+      "margin-left": this.options.fillText.marginLeft,
+      "margin-right": this.options.fillText.marginRight}).append(partFillLabel)
 
     partFill.append(partFillIcon).append(partFillText);
+
+    this.labelPartFill = partFillLabel
 
     wrapper.append(fill).append(partFill);
 
@@ -109,7 +138,7 @@
   }
 
   AwesomeVisuals.prototype.getOptions = function (options) {
-    options = $.extend(true,this.getDefaults(), this.$element.data(), options)
+    options = $.extend(true,{},this.getDefaults(), this.$element.data(), options)
 
     return options
   }
@@ -134,10 +163,39 @@
     (c>0 ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
     }
 
+    //methods
+
+  AwesomeVisuals.prototype.update = function(value){
+
+    this.options.fillProportion = Math.max(Math.min(value,1),0);
+
+    var fillHeight = (this.options.height - this.options.fillAdjustment.top - this.options.fillAdjustment.bottom) ;
+    var partFillMarginTop = fillHeight* (1-this.options.fillProportion) + this.options.fillAdjustment.top;
+    var partFillHeight = this.options.height - partFillMarginTop;
+
+    if (this.options.fillDirection == "up"){
+       this.partFill.css({
+        "margin-top": partFillMarginTop,
+        "height": partFillHeight  
+       });
+     }else{
+        this.partFill.css({
+        "margin-bottom": partFillMarginTop,
+        "height": partFillHeight  
+       });
+
+     }
+
+     this.labelFill.html(this.getLabel(this.options.fillText.format,this.options.fillProportion))
+
+     this.labelPartFill.html(this.getLabel(this.options.fillText.format,this.options.fillProportion))
+
+  }
+
   // AwesomeVisuals PLUGIN DEFINITION
   // =========================
 
-  function Plugin(option) {
+  function Plugin(option, methodValue) {
     return this.each(function () {
       var $this   = $(this)
       var data    = $this.data('wun.AwesomeVisuals')
@@ -145,7 +203,7 @@
 
       if (!data && option == 'destroy') return
       if (!data) $this.data('wun.AwesomeVisuals', (data = new AwesomeVisuals(this, options)))
-      if (typeof option == 'string') data[option]()
+      if (typeof option == 'string') data[option](methodValue)
     })
   }
 

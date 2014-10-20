@@ -14,8 +14,6 @@
 .partFill {
     position: absolute;
     color: red;
-    margin-top: 200px;
-    height: 200px;
     overflow: hidden;
     width: 100%;
 }
@@ -27,6 +25,21 @@
     line-height: 0px;
 }
 
+.awesomeVisualsWrapper.up .iconHolder{
+    bottom: 0;
+}
+
+.awesomeVisualsWrapper.down .iconHolder{
+    top: 0;
+}
+
+.awesomeVisualsWrapper.left .iconHolder{
+    left: 0;
+}
+
+.awesomeVisualsWrapper.right .iconHolder{
+    right: 0;
+}
 
 .fillText {
     position: absolute;
@@ -37,6 +50,22 @@
     height: 400px;
     box-sizing: content-box;
     width: 100%;
+}
+
+.awesomeVisualsWrapper.up .fillText{
+    bottom: 0;
+}
+
+.awesomeVisualsWrapper.down .fillText{
+    top: 0;
+}
+
+.awesomeVisualsWrapper.left .fillText{
+    left: 0;
+}
+
+.awesomeVisualsWrapper.right .fillText{
+    right: 0;
 }
 
 .fillText>div{
