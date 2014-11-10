@@ -7,33 +7,39 @@
 	
 
 	$("#heart").AwesomeVisuals({
-		fontawesomeIcon: "heart",
+		fontawesomeicon: "heart",
 		height: 200,
-		fillProportion: 0.75,
-		fillColor: "blue",
-		fillDirection: "down",
-		fillAdjustment:{
+		fillproportion: 0.75,
+		fillcolor: "blue",
+		filldirection: "down",
+		filladjustment:{
 			top: 10,
 			bottom: 10
 		},
-		fillText:{
+		filltext:{
 			size: "35px"
 		}
 	});
 
 	$("#beer").AwesomeVisuals({
-		fontawesomeIcon: "beer",
-		fillProportion: 0.65,
-		fillColor: 'orange',
-		fillAdjustment:{
+		fontawesomeicon: "beer",
+		fillproportion: 0.65,
+		fillcolor: 'orange',
+		filladjustment:{
 			top: 25,
 			bottom: 25
 		},
-		fillText:{
+		filltext:{
 			marginLeft: "60px"
 		}
 	});
 
 	$("#beer").AwesomeVisuals("update", 0.3);
 
+	$("#grid").AwesomeVisuals({
+		type: "grid"
+	})
+
+
+	$("#grid").AwesomeVisuals("update", 0.25);
 }();

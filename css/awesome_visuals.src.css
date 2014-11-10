@@ -41,7 +41,7 @@
     right: 0;
 }
 
-.fillText {
+.filltext {
     position: absolute;
     font-size: 55px;
     display: table;
@@ -52,31 +52,39 @@
     width: 100%;
 }
 
-.awesomeVisualsWrapper.up .fillText{
+.awesomeVisualsWrapper.up .filltext{
     bottom: 0;
 }
 
-.awesomeVisualsWrapper.down .fillText{
+.awesomeVisualsWrapper.down .filltext{
     top: 0;
 }
 
-.awesomeVisualsWrapper.left .fillText{
+.awesomeVisualsWrapper.left .filltext{
     left: 0;
 }
 
-.awesomeVisualsWrapper.right .fillText{
+.awesomeVisualsWrapper.right .filltext{
     right: 0;
 }
 
-.fillText>div{
+.filltext>div{
     display: table-cell;
     vertical-align: middle;
     padding: 40px;
 }
 
-.partFill>.fillText {
+.partFill>.filltext {
     color: white;
 }
-.fill>.fillText {
+.fill>.filltext {
     color: red;
+}
+
+.iconRow{
+    text-align: center;
+}
+
+.gridIcon{
+    margin: 0.2em;
 }
